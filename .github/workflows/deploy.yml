@@ -17,6 +17,7 @@ jobs:
           cd /home/${{ secrets.USERNAME }}/wechaty-bot
           rm -f log.txt
           git pull -f
+          source /home/${{ secrets.USERNAME }}/.nvm/nvm.sh
           nvm use 16
           npm install
           export PADLOCAL_TOKEN=${{ secrets.PADLOCAL_TOKEN }}
