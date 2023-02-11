@@ -14,10 +14,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          cd /home/${{ secrets.USERNAME }}
-          source .bashrc 
-          nvm use 16
-          cd wechaty-bot
+          cd /home/${{ secrets.USERNAME }}/wechaty-bot
           rm -f log.txt
           git pull
           export PADLOCAL_TOKEN=${{ secrets.PADLOCAL_TOKEN }}
