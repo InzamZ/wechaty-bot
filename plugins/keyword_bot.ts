@@ -1,5 +1,5 @@
 import { Message, log } from "wechaty";
-import { Config } from "../../config";
+import { Config } from "../config";
 
 var bot_config = new Config();
 

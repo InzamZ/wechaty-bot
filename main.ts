@@ -1,7 +1,7 @@
-import { config, log, ScanStatus, WechatyBuilder } from "wechaty";
+import { log, ScanStatus, WechatyBuilder } from "wechaty";
 import { PuppetPadlocal } from "wechaty-puppet-padlocal";
-import { dingDongBot, getMessagePayload, LOGPRE } from "./helper";
-import { keywordBot } from "./plugins/keyword_bot/index";
+import { getMessagePayload, LOGPRE } from "./helper";
+import { keywordBot } from "./plugins/keyword_bot";
 import { xcpcContest, sendXcpcContestToday } from "./plugins/xcpc_contest";
 import { codeforcesRating } from "./plugins/codeforces_rating";
 import { Config } from "./config";
