@@ -1,6 +1,6 @@
 import { Message, log } from "wechaty"
 import { FileBox } from 'file-box'
-const got  = require('got');
+const got = require('got');
 
 import sharp from 'sharp';
 import fs from 'fs';
@@ -65,13 +65,28 @@ export async function codeforcesRating(message: Message) {
                         type: 'png',
                     });
                     await browser.close();
+                    // 获取截图的长宽
+                    const { width, height } = await sharp('./data/codeforces/' + handle + '.png').metadata();
                     // 使用got下载avatar对应的图片
                     const response2 = await got(avatar);
-                    // 使用sharp将两张图片合并
-                    const buffer = fs.readFileSync('./data/codeforces/' + handle + '.png');
-                    // 读取buffer图片的宽度
-                    const { width } = await sharp(buffer).metadata();
-                    const buffer2 = await sharp(response2.rawBody).resize(width, width).composite([{ input: buffer, gravity: 'south' }]).png().toBuffer();
+                    // 使用sharp将两张图片合并，新建一个背景图片，将avatar图片放在背景图片的上方，然后将codeforces图片放在背景图片的下方
+                    const buffer2 = await sharp({
+                        create: {
+                            width: width,
+                            height: width+height,
+                            channels: 4,
+                            background: { r: 255, g: 255, b: 255, alpha: 1 }
+                        }
+                    }).composite([
+                        {
+                            input: await sharp('./data/codeforces/' + handle + '.png').toBuffer(),
+                            gravity: 'south'
+                        },
+                        {
+                            input: await sharp(response2.rawBody).resize(width, width).toBuffer(),
+                            gravity: 'north'
+                        }
+                    ]).png().toBuffer();
                     // 使用file-box将图片转换为file-box
                     const fileBox = FileBox.fromBuffer(buffer2, 'codeforces.png');
                     // 发送图片
