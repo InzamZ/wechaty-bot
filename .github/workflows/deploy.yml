@@ -14,6 +14,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
+          source ~/.bashrc && nvm use 16
           cd /home/${{ secrets.USERNAME }}/wechaty-bot
           rm -f log.txt
           git pull
