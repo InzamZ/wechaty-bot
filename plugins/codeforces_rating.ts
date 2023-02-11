@@ -1,10 +1,11 @@
 import { Message, log } from "wechaty"
 import { FileBox } from 'file-box'
+const got  = require('got');
 
-const sharp = require("sharp")
-const fs = require('fs');
-const https = require('https');
-const puppeteer = require('puppeteer');
+import sharp from 'sharp';
+import fs from 'fs';
+import https from 'https';
+import puppeteer from 'puppeteer';
 
 // https://img.shields.io/badge/Misaka__No.19614-Expert%20%201712-00f.svg?longCache=true&style=for-the-badge&logo=Codeforces&link=https://codeforces.com/profile/Misaka_No.19614
 export async function codeforcesRating(message: Message) {
@@ -23,7 +24,7 @@ export async function codeforcesRating(message: Message) {
                     let rating = data.result[0].rating;
                     let maxRating = data.result[0].maxRating;
                     let rank = data.result[0].rank;
-                    let maxRank = data.result[0].maxRank;
+                    let avatar = data.result[0].titlePhoto;
                     let color = "00f";
                     if (rank == "newbie") {
                         color = "-808080";
@@ -52,10 +53,11 @@ export async function codeforcesRating(message: Message) {
                     else if (rank == "international grandmaster") {
                         color = "red";
                     }
-                    let imageurl = `https://img.shields.io/badge/${handle}-${rating}-${color}.svg?longcache=true&style=for-the-badge&logo=Codeforces&link=https://codeforces.com/profile/${handle}`;
+                    let imageurl = `https://img.shields.io/badge/${handle}-${rank}%20%20${rating}-${color}.svg?longcache=true&style=for-the-badge&logo=Codeforces&link=https://codeforces.com/profile/${handle}`;
+                    // 使用puppeteer打开imageurl对应的图片
                     const browser = await puppeteer.launch();
                     const page = await browser.newPage();
-                    await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 3 })
+                    await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 })
                     await page.goto(imageurl);
                     const image = await page.waitForSelector('svg');
                     await image.screenshot({
@@ -63,12 +65,20 @@ export async function codeforcesRating(message: Message) {
                         type: 'png',
                     });
                     await browser.close();
-                    const fileBox = await FileBox.fromFile(`./data/codeforces/${handle}.png`);
+                    // 使用got下载avatar对应的图片
+                    const response2 = await got(avatar);
+                    // 使用sharp将两张图片合并
+                    const buffer = fs.readFileSync('./data/codeforces/' + handle + '.png');
+                    // 读取buffer图片的宽度
+                    const { width } = await sharp(buffer).metadata();
+                    const buffer2 = await sharp(response2.rawBody).resize(width, width).composite([{ input: buffer, gravity: 'south' }]).png().toBuffer();
+                    // 使用file-box将图片转换为file-box
+                    const fileBox = FileBox.fromBuffer(buffer2, 'codeforces.png');
+                    // 发送图片
                     await message.say(fileBox);
                 }
             });
-        }).on('error', (e: any) => {
-            console.error(e);
-        });
+        }
+        );
     }
 }

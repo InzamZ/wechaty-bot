@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "strictPropertyInitialization": false,
-        "target": "es2017"
+        "esModuleInterop": true,
+        "strictPropertyInitialization": false
     }
 }

@@ -14,6 +14,8 @@ const schedule = require('node-schedule');
  ****************************************/
 // log.level("silly");
 
+export default {}
+
 var bot_config = new Config();
 
 const puppet = new PuppetPadlocal({
