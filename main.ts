@@ -59,7 +59,7 @@ const bot = WechatyBuilder.build({
     if (message.self() || message.age() > 30 || message.date().getTime() < Date.now() - 2 * 60 * 1000) {
       return;
     }
-    if (bot_config.white_list.indexOf(message.room().id) === -1) {
+    if (message.room() && bot_config.white_list.indexOf(message.room().id) === -1) {
       log.silly(`white list : ${message.toString()}`);
     }
     await xcpcContest(message);
