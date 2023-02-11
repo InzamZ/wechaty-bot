@@ -95,6 +95,15 @@ const bot = WechatyBuilder.build({
     log.error(LOGPRE, `on error: ${error}`);
   })
 
+  .on("login", async (user) => {
+    log.info(LOGPRE, `on login: ${user}`);
+    // 寻找master并发送通知
+    const master = await bot.Contact.find({ name: bot_config.master_name });
+    if (master) {
+      await master.say("你就是老子的 MASTER 吗？");
+    }
+  })
+
 const scheduleCronstyle = () => {
   schedule.scheduleJob('19 59 7 * * *', () => {
     bot.Room.find({ topic: bot_config.xcpc_report[0] }).then(
