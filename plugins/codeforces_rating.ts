@@ -1,5 +1,5 @@
-import { Message } from "wechaty";
-import { FileBox } from "wechaty-puppet/dist/esm/src/config";
+import { Message,log } from "wechaty"
+import { FileBox } from 'file-box'
 
 const fs = require('fs');
 const https = require('https');

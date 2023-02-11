@@ -1,4 +1,4 @@
-import { log, ScanStatus, WechatyBuilder } from "wechaty";
+import { config,log, ScanStatus, WechatyBuilder } from "wechaty";
 import { PuppetPadlocal } from "wechaty-puppet-padlocal";
 import { getMessagePayload, LOGPRE } from "./helper";
 import { keywordBot } from "./plugins/keyword_bot";
