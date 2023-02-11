@@ -8,7 +8,7 @@ const puppeteer = require('puppeteer');
 
 // https://img.shields.io/badge/Misaka__No.19614-Expert%20%201712-00f.svg?longCache=true&style=for-the-badge&logo=Codeforces&link=https://codeforces.com/profile/Misaka_No.19614
 export async function codeforcesRating(message: Message) {
-    if (message.self() || await message.mentionSelf() != true ) {
+    if (message.self()) {
         return;
     }
     if (message.text().indexOf("cfrating") == 0) {
