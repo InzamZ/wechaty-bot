@@ -5,6 +5,7 @@ import { keywordBot } from "./plugins/keyword_bot";
 import { xcpcContest, sendXcpcContestToday } from "./plugins/xcpc_contest";
 import { codeforcesRating } from "./plugins/codeforces_rating";
 import { Config } from "./config";
+import { FileBox } from "file-box";
 
 const schedule = require('node-schedule');
 
@@ -98,8 +99,11 @@ const bot = WechatyBuilder.build({
     log.info(LOGPRE, `on login: ${user}`);
     // 寻找master并发送通知
     const master = await bot.Contact.find({ name: bot_config.master_name });
+    // 随机选择问候方式
+    const voiceFilePath = "./data/560px-Master_ubw.png"
+    const fileBox = FileBox.fromFile(voiceFilePath);
     if (master) {
-      await master.say("你就是老子的 MASTER 吗？");
+      await master.say(fileBox);
     }
   })
 
