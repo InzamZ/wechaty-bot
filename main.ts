@@ -1,4 +1,4 @@
-import { config,log, ScanStatus, WechatyBuilder } from "wechaty";
+import { config, log, ScanStatus, WechatyBuilder } from "wechaty";
 import { PuppetPadlocal } from "wechaty-puppet-padlocal";
 import { getMessagePayload, LOGPRE } from "./helper";
 import { keywordBot } from "./plugins/keyword_bot";
@@ -7,7 +7,6 @@ import { codeforcesRating } from "./plugins/codeforces_rating";
 import { Config } from "./config";
 
 const schedule = require('node-schedule');
-
 
 /****************************************
  * 去掉注释，可以完全打开调试日志
@@ -105,7 +104,12 @@ const bot = WechatyBuilder.build({
   })
 
 const scheduleCronstyle = () => {
-  schedule.scheduleJob('19 59 7 * * *', () => {
+  const xcpc_report_rule = new schedule.RecurrenceRule();
+  xcpc_report_rule.hour = 7;
+  xcpc_report_rule.minute = 59;
+  xcpc_report_rule.second = 19;
+  xcpc_report_rule.tz = 'Asia/Shanghai';
+  schedule.scheduleJob(xcpc_report_rule, () => {
     bot.Room.find({ topic: bot_config.xcpc_report[0] }).then(
       (xcpcReportRoom) => {
         sendXcpcContestToday(xcpcReportRoom)
