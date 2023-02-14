@@ -36,7 +36,8 @@ export async function makeItAQuato(message: Message) {
         let quato = await sharp({
             create: {
                 width: 1000,
-                height: 65,
+                // height: 65,
+                height: 418,
                 channels: 4,
                 background: { r: 0, g: 0, b: 0, alpha: 1 }
             },
@@ -56,7 +57,7 @@ export async function makeItAQuato(message: Message) {
         let quato_author_svg = await sharp({
             create: {
                 width: 1000,
-                height: 98,
+                height: 200,
                 channels: 4,
                 background: { r: 0, g: 0, b: 0, alpha: 1 }
             },
