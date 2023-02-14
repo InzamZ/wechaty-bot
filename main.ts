@@ -98,7 +98,7 @@ const bot = WechatyBuilder.build({
   })
 
 // 登录成功回应
-if (process.env.LOGIN_SUCCESS_ECHO === "true") 
+if (process.env.LOGIN_SUCCESS_ECHO == "true") 
   bot.on("login", async (user) => {
     log.info(LOGPRE, `on login: ${user}`);
     // 寻找master并发送通知
