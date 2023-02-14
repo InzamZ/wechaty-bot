@@ -6,6 +6,7 @@ import { xcpcContest, sendXcpcContestToday } from "./plugins/xcpc_contest";
 import { codeforcesRating } from "./plugins/codeforces_rating";
 import { Config } from "./config";
 import { FileBox } from "file-box";
+import { makeItAQuato } from "./plugins/make_it_a_quato";
 
 const schedule = require('node-schedule');
 
@@ -70,6 +71,7 @@ const bot = WechatyBuilder.build({
   })
 
   .on("message", codeforcesRating)
+  .on("message", makeItAQuato)
 
   .on("room-invite", async (roomInvitation) => {
     log.info(LOGPRE, `on room-invite: ${roomInvitation}`);
