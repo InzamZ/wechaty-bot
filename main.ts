@@ -62,9 +62,9 @@ const bot = WechatyBuilder.build({
     if (message.self() || message.age() > 30 || message.date().getTime() < Date.now() - 2 * 60 * 1000) {
       return;
     }
-    if (message.room() && bot_config.white_list.indexOf(message.room().id) === -1) {
-      log.silly(`white list : ${message.toString()}`);
-    }
+    // if (message.room() && bot_config.white_list.indexOf(message.room().id) === -1) {
+    //   log.silly(`white list : ${message.toString()}`);
+    // }
     await xcpcContest(message);
     await getMessagePayload(message);
     await keywordBot(message);
@@ -73,25 +73,25 @@ const bot = WechatyBuilder.build({
   .on("message", codeforcesRating)
   .on("message", makeItAQuato)
 
-  .on("room-invite", async (roomInvitation) => {
-    log.info(LOGPRE, `on room-invite: ${roomInvitation}`);
-  })
+  // .on("room-invite", async (roomInvitation) => {
+  //   log.info(LOGPRE, `on room-invite: ${roomInvitation}`);
+  // })
 
-  .on("room-join", (room, inviteeList, inviter, date) => {
-    log.info(LOGPRE, `on room-join, room:${room}, inviteeList:${inviteeList}, inviter:${inviter}, date:${date}`);
-  })
+  // .on("room-join", (room, inviteeList, inviter, date) => {
+  //   log.info(LOGPRE, `on room-join, room:${room}, inviteeList:${inviteeList}, inviter:${inviter}, date:${date}`);
+  // })
 
-  .on("room-leave", (room, leaverList, remover, date) => {
-    log.info(LOGPRE, `on room-leave, room:${room}, leaverList:${leaverList}, remover:${remover}, date:${date}`);
-  })
+  // .on("room-leave", (room, leaverList, remover, date) => {
+  //   log.info(LOGPRE, `on room-leave, room:${room}, leaverList:${leaverList}, remover:${remover}, date:${date}`);
+  // })
 
-  .on("room-topic", (room, newTopic, oldTopic, changer, date) => {
-    log.info(LOGPRE, `on room-topic, room:${room}, newTopic:${newTopic}, oldTopic:${oldTopic}, changer:${changer}, date:${date}`);
-  })
+  // .on("room-topic", (room, newTopic, oldTopic, changer, date) => {
+  //   log.info(LOGPRE, `on room-topic, room:${room}, newTopic:${newTopic}, oldTopic:${oldTopic}, changer:${changer}, date:${date}`);
+  // })
 
-  .on("friendship", (friendship) => {
-    log.info(LOGPRE, `on friendship: ${friendship}`);
-  })
+  // .on("friendship", (friendship) => {
+  //   log.info(LOGPRE, `on friendship: ${friendship}`);
+  // })
 
   .on("error", (error) => {
     log.error(LOGPRE, `on error: ${error}`);
