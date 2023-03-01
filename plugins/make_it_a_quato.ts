@@ -3,13 +3,14 @@ import sharp from 'sharp';
 import { log, Message } from 'wechaty';
 import fs from 'fs';
 import { FileBox } from 'file-box';
+import { max } from 'moment';
 const Text2SVG = require('text-to-svg')
 
 export async function makeItAQuato(message: Message) {
     // 
     var message_split = message.text().split("- - - - - - - - - - - - - - -");
     console.log(message_split);
-    if (message_split.length != 2 || message.self() || !message.mentionSelf())
+    if (message_split.length != 2 || message.self() || await message.mentionSelf() != true)
         return;
     try {
         var cmd = message_split[1];
@@ -27,7 +28,7 @@ export async function makeItAQuato(message: Message) {
         var cmd_args = cmd.split(" ");
         // 使用sharp将quato_example转换为图片
         const text2SVG = Text2SVG.loadSync('./data/font/SourceHanSansSC-VF.ttf')
-        var attributes = { fill: 'white'}
+        var attributes = { fill: 'white' }
         var options = {
             fontSize: 53,
             anchor: 'top',
@@ -37,7 +38,15 @@ export async function makeItAQuato(message: Message) {
         const max_size_of_line = 9;
         while (quato_example.length > max_size_of_line) {
             quato_height += 85;
-            const svg = Buffer.from(text2SVG.getSVG(quato_example.substring(0,max_size_of_line), options))
+            var svg: Buffer;
+            if (quato_example.length == max_size_of_line + 1) {
+                svg = Buffer.from(text2SVG.getSVG(quato_example, options))
+                quato_example = "";
+            }
+            else {
+                svg = Buffer.from(text2SVG.getSVG(quato_example.substring(0, max_size_of_line), options))
+                quato_example = quato_example.substring(max_size_of_line);
+            } 
             quato_avatar = await sharp({
                 create: {
                     width: 618,
@@ -55,7 +64,6 @@ export async function makeItAQuato(message: Message) {
                     gravity: 'north',
                 }
             ]).png().toBuffer();
-            quato_example = quato_example.substring(max_size_of_line);
         }
         if (quato_example.length > 0) {
             quato_height += 85;
@@ -83,7 +91,7 @@ export async function makeItAQuato(message: Message) {
             anchor: 'top',
             attributes,
         }
-        attributes = { fill: 'gray'}
+        attributes = { fill: 'gray' }
         const author_svg = Buffer.from(text2SVG.getSVG('@' + quato_author, options))
         // 获取图片的宽高
         // 生成一个新的图片
